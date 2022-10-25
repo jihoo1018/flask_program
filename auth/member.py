@@ -2,9 +2,7 @@
 아이디, 비밀번호, 이름을 받아서
 회원가입, 목록, 탈퇴하는 프로그램을 개발하시오
 '''
-
-
-
+from util.common import Common
 
 
 class Member(object):
@@ -23,32 +21,24 @@ class Member(object):
         pw = input("pw: ")
         return Member(name, id, pw)
 
-    @staticmethod
-    def print_menu():
-        print("1.회원가입")
-        print("2.목록")
-        print("3.탈퇴")
-        print("0.종료")
-        menu = input("메뉴 선택: ")
-        return int(menu)
 
     @staticmethod
     def get_member(ls):
-        [i.print_info() for i in ls]
+        [print(i) for i in ls]
 
     @staticmethod
     def delete_member(ls, name):
         del ls[[i for i, j in enumerate(ls)
                 if j.name == name][0]]
 
-    def print_info(self):
+    def __str__(self):
         return f"{self.name}{self.id}{self.pw}"
 
     @staticmethod
     def main():
         ls = []
         while True:
-            menu = Member.print_menu()
+            menu = Common.print_menu()
             if menu == 1:
                 print("###회원가입###")
                 member = Member.new_member()

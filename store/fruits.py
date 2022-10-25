@@ -9,6 +9,8 @@
 3번과일: 망고
 ********************************
 """
+from util.common import Common
+
 
 class Fruit(object):
 
@@ -25,14 +27,6 @@ class Fruit(object):
         print(fruit)
         print(aster)
 
-    @staticmethod
-    def print_menu():
-        print("1. 과일 등록")
-        print("2. 과일 목록")
-        print("3. 과일 삭제")
-        print("0. 종료")
-        menu = input("메뉴 선택: ")
-        return int(menu)
 
 
     @staticmethod
@@ -41,13 +35,13 @@ class Fruit(object):
 
     @staticmethod
     def get_fruit(ls):
-        print([i.print_info() for i in ls])
+        print([print(i) for i in ls])
 
-    def print_info(self):
+    def __str__(self):
         return f"{self. fruit}"
 
     @staticmethod
-    def delete_fruit(ls):
+    def delete_fruit(ls, fruit=None):
         del ls[[i for i, j in enumerate(ls)
                 if j.fruit == fruit][0]]
 
@@ -56,7 +50,7 @@ class Fruit(object):
     def main():
         ls = []
         while True:
-            menu = Fruit.print_menu
+            menu = Common.print_menu
             if menu == 0:
                 break
             elif menu == 1:

@@ -1,3 +1,6 @@
+from util.common import Common
+
+
 class Calculator(object):
     def __init__(self, num1, op, num2):
         self.num1 = num1
@@ -23,14 +26,6 @@ class Calculator(object):
             result = "잘못된 연산 입니다."
         print(f"{num1} {op} {num2} = {result}")
 
-    @staticmethod
-    def print_menu():
-        print("1.등록")
-        print("2.목록")
-        print("3.삭제")
-        print("0.종료")
-        menu = input("메뉴선택: ")
-        return int(menu)
 
     @staticmethod
     def new_calc():
@@ -41,10 +36,10 @@ class Calculator(object):
 
     @staticmethod
     def get_calc(ls):
-        [i.print_info() for i in ls]
+        [(print(i))for i in ls]
 
-    def print_info(self):
-        return f"{self.num1}{self.op}{self.num2}{self.result}"
+    def __str__(self):
+        print(f"{self.num1}{self.op}{self.num2}{self.result}")
 
     @staticmethod
     def delete_calc(ls, num1):
@@ -57,7 +52,7 @@ class Calculator(object):
     def main():
         ls = []
         while True:
-            menu = Calculator.print_menu
+            menu = Common.print_menu
             if menu == 0:
                 break
             elif menu == 1:

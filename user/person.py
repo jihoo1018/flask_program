@@ -12,6 +12,9 @@
 """
 from datetime import datetime
 
+from util.common import Common
+
+
 class Person(object):
     def __init__(self, name, ssn, address) -> None:
         self.name = name
@@ -68,19 +71,12 @@ class Person(object):
 
     @staticmethod
     def get_person(ls):
-        [i.print_info() for i in ls]
+        [print(i) for i in ls]
 
-    def print_info(self):
-        return f"{self.name} {self.age} {self.gender} {self.address}"
+    def __str__(self):
+        print(f"{self.name} {self.age} {self.gender} {self.address}")
 
-    @staticmethod
-    def print_menu():
-        print("1.등록")
-        print("2.목록")
-        print("3.삭제")
-        print("0.종료")
-        menu = input("메뉴선택: ")
-        return int(menu)
+
 
     @staticmethod
     def delete_person(ls, name):
@@ -91,7 +87,7 @@ class Person(object):
     def main():
         ls = []
         while True:
-            menu = Person.print_menu
+            menu = Common.print_menu
             if menu == 0:
                 break
             elif menu == 1:

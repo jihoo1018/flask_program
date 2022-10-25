@@ -1,6 +1,6 @@
 from glob import escape
 
-
+from util.common import Common
 
 class Bmi(object):
     def __init__(self, name, cm, kg) -> None:
@@ -58,9 +58,11 @@ class Bmi(object):
 
     @staticmethod
     def get_profile(ls):
-        [i.print_info() for i in ls]
+        [print(i) for i in ls]
 
-    def print_info(self):
+
+
+    def __str__(self):
         return f"{self.name}{self.cm}{self.kg}{self.biman}"
 
     @staticmethod
@@ -68,23 +70,13 @@ class Bmi(object):
         del ls[[i for i, j in enumerate(ls)
                 if j.name == name][0]]
 
-    @staticmethod
-    def print_menu():
-        print("1.등록")
-        print("2.목록")
-        print("3.삭제")
-        print("0.종료")
-        menu = input("메뉴선택: ")
-        return int(menu)
-
-
 
 
     @staticmethod
     def main():
         ls = []
         while True:
-            menu = Bmi.print_menu
+            menu = Common.print_menu()
             if menu == 0:
                 break
             if menu == 1:

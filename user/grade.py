@@ -18,6 +18,8 @@
 유관순 90 90 92 272 90.6 A
 ********************************
 """
+from util.common import Common
+
 
 class Grade(object):
 
@@ -46,7 +48,7 @@ class Grade(object):
         else: grade = "F"
         self.grade = grade
 
-    def print_grade(self):
+    def __str__(self):
         print(f"{self.name} {self.ko} {self.en} {self.ma} {self.total} {self.avg} {self.grade}")
 
     @staticmethod
@@ -62,17 +64,9 @@ class Grade(object):
         print("********************************")
         print("이름 국어 영어 수학 총점 평균 학점")
         print("*******************************")
-        for i in ls:
-            i.print_grade()
+        [print(i) for i in ls]
         print("********************************")
 
-    @staticmethod
-    def print_menu():
-        print("1. 성적 등록")
-        print("2. 성적 출력")
-        print("3. 성적 삭제")
-        print("4. 종료")
-        return int(input("메뉴 선택: "))
 
     @staticmethod
     def delete_grade(ls, name):
@@ -84,7 +78,7 @@ class Grade(object):
     def main():
         ls = []
         while True:
-            menu = Grade.print_menu()
+            menu = Common.print_menu()
             if menu == 1:
                 print(" ### 성적 등록 ### ")
                 ls.append(Grade.new_grade())

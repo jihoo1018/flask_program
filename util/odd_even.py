@@ -1,5 +1,7 @@
 import random
 
+from util.common import Common
+
 
 class Odd(object):
     def __init__(self) -> None:
@@ -26,10 +28,6 @@ class Odd(object):
         pass
 
     @staticmethod
-    def print_menu():
-        pass
-
-    @staticmethod
     def delete_odd():
         pass
 
@@ -41,7 +39,7 @@ class Odd(object):
     def main():
         ls = []
         while True:
-            menu = Odd.print_menu
+            menu = Common.print_menu
             if menu == 0:
                 break
             elif menu == 1:
