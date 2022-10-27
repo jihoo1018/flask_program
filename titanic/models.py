@@ -10,7 +10,13 @@ class TitanicModel(object):
         pass
 
     def __str__(self):
-        pass
+        b = pd.read_csv("train.csv")
+        return f'Train type: {type(b)}'
+        #         print(f'Train columns: {b.columns}')
+        #         print(f'Train head: {b.head()}')
+        #         print(f'Train null의 갯수: {b.isnull().sum()}')
+
+
 
     def preprocess(self):
         pass
@@ -19,7 +25,8 @@ class TitanicModel(object):
         this = self.dataset
         this.context = './data/'
         this.fname = fname
-        return pd.read_csv(this.context + this.fname)
+        df = pd.read_csv(this.context + this.fname)
+        return df
 
     def create_train(self):
         pass

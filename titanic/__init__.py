@@ -1,3 +1,4 @@
+from titanic.models import TitanicModel
 from titanic.template import Plot
 from titanic.views import TitanicController
 from util.common import Common
@@ -11,10 +12,24 @@ while True:
 
     elif menu == "1":
         print("### 시각화 ###")
-        plot = Plot("train.csv")
-        plot.draw_survived()
-        plot.draw_pclass()
-        plot.draw_sex()
+        a = TitanicModel()
+        b = a.new_model("train.csv")
+        # print(f'Train type: {type(b)}')
+        #         print(f'Train columns: {b.columns}')
+        #         print(f'Train head: {b.head()}')
+        #         print(f'Train null의 갯수: {b.isnull().sum()}')
+
+
+        #   ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp',
+        #           'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked']
+        # Age            177
+        # Cabin          687
+        # Embarked         2
+
+        # plot = Plot("train.csv")
+        # plot.draw_survived()
+        # plot.draw_pclass()
+        # plot.draw_sex()
 
     elif menu == "2":
         print("### 모델링 ###")
