@@ -12,30 +12,19 @@ while True:
 
     elif menu == "1":
         print("### 시각화 ###")
-        a = TitanicModel()
-        b = a.new_model("train.csv")
-        # print(f'Train type: {type(b)}')
-        #         print(f'Train columns: {b.columns}')
-        #         print(f'Train head: {b.head()}')
-        #         print(f'Train null의 갯수: {b.isnull().sum()}')
-
-
-        #   ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp',
-        #           'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked']
-        # Age            177
-        # Cabin          687
-        # Embarked         2
-
-        # plot = Plot("train.csv")
-        # plot.draw_survived()
-        # plot.draw_pclass()
-        # plot.draw_sex()
-
+        plot = Plot("train.csv")
+        plot.draw_survived()
+        plot.draw_pclass()
+        plot.draw_sex()
+        plot.draw_embarked()
     elif menu == "2":
         print("### 모델링 ###")
+        df = api.modeling('train.csv', 'test.csv')
     elif menu == "3":
         print("### 머신 러닝 ###")
+        df = api.learning('train.csv', 'test.csv')
     elif menu == "4":
         print("### 배포 ###")
+        df = api.submit('train.csv', 'test.csv')
     else:
         print("### 해당 메뉴 없음 ###")
