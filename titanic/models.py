@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from util.dataset import Dataset
 
@@ -57,33 +58,34 @@ class TitanicModel(object):
             this.test = this.test.drop(i, axis=1)
         return this
 
-    '''
     @staticmethod
-    def pclass_ordinal(this) -> object: #1,2,3 등칸
-        train = this.train
-        test = this.test
-        print(train['Pclass'])
-        return this '''
-
-    @staticmethod
-    def sex_nominal(this) -> object: #female->1 , male ->0
-        for i in [this.train, this.test]: #컴프리헨션 안됌, 리스트 중에는 안돼는 것도 존재함!
+    def sex_nominal(this) -> object:
+        for i in [this.train, this.test]:
             i['Gender'] = i['Sex'].map({"male" : 0, "female" : 1})
         return this
 
     @staticmethod
-    def age_ordinal(this) -> object: #연령대 10대, 20대, 30대
+    def age_ordinal(this) -> object:
+        for i in [this.train,this.test]:
+            i['Age']=i['Age'].fillna(-0.5)
+        bins = [-1, 0, 5, 12, 18, 24, 35, 68, np.inf]
+        labels = ['Unknown', 'Baby', 'Child', 'Teenager', 'Student', 'Young Adult', 'Adult', 'Senior']
+        age_mapping = {'Unknown': 0, 'Baby': 1, 'Child': 2, 'Teenager': 3, 'Student': 4, 'Young Adult': 5, 'Adult': 6, 'Senior': 7}
+
+        for i in [this.train, this.test]:
+            i['AgeGroup'] = pd.cut(i['Age'], bins=bins, labels=labels)
+            i['AgeGroup'] = i['AgeGroup'].map(age_mapping)
         return this
 
     @staticmethod
-    def fare_ordinal(this) -> object: # 비싼것, 보통, 저렴한것 (4등분, qcut 사용)
+    def fare_ordinal(this) -> object:
         for i in [this.train, this.test]:
             i['FareBand'] = pd.qcut(i['Fare'],4,["1","2","3","4"])
         return this
 
 
     @staticmethod
-    def embarked_nominal(this) -> object: #승선항구 S,C,Q {"s" : 1, "c" : 2, "q" : 3}
+    def embarked_nominal(this) -> object:
         this.train = this.train.fillna({"Embarked":"S"})
         this.test = this.test.fillna({"Embarked": "S"})
         for i in [this.train, this.test]:
