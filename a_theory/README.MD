@@ -43,7 +43,7 @@
 #### HoG 서술자 (Histogram of Oriented Gradient)
 #### blob (Binary **Large** Object)/ 비디오 멀티미디어 객체들
 #### LoG (Laplacian of Gaussian)
-#### DoG (Difference of Gaussians)
+#### DoG (Difference of Gaussian)
 #### SIFT (Scale-Invariant Feature Transform)
 #### 동차좌표
 #### k-d 트리
