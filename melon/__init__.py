@@ -1,16 +1,21 @@
-from melon.views import MenuController
-from util.common import Common
+from melon.domains import Melon
+from melon.views import MelonController
 
-if __name__ == '__main__':
-    api = MenuController()
+if __name__=="__main__":
+    melon = Melon()
+    api = MelonController()
     while True:
-        menus = ["종료", "멜론뮤직 스크랩핑"]
-        menu = Common.menu(menus)
+        menu = input("0번:종료,1번:멜론차트")
         if menu == "0":
-            api.menu_0(menus[0])
+            print("종료")
             break
         elif menu == "1":
-            print(menus[1])
-            api.menu_1(arg="https://www.melon.com/chart/day/index.htm")
+            print("멜론차트")
+            melon.domain = "https://www.melon.com/chart/index.htm?dayTime="
+            melon.query_string = "2022110809"
+            melon.parser = "lxml"
+            melon.class_names=["ellipsis rank01", "ellipsis rank02"]
+            melon.tag_name = "div"
+            api.menu_1(melon)
         else:
-            print("잘못된 선택 입니다")
+            print("해당메뉴 없음")

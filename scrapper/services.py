@@ -1,26 +1,19 @@
 from urllib.request import urlopen
-
 from bs4 import BeautifulSoup
 
-from scrapper import MusicRanking
-
-
 def BugsMusic(arg):
-    arg = MusicRanking()
-    soup = BeautifulSoup(urlopen(arg.url), arg.parser)
+    soup = BeautifulSoup(urlopen(arg.domain + arg.query_string), 'lxml')
     title = {"class": arg.class_names[0]}
     artist = {"class": arg.class_names[1]}
     titles = soup.find_all(name=arg.tag_name, attrs=title)
+    titles = [i.find('a').text for i in titles]
     artists = soup.find_all(name=arg.tag_name, attrs=artist)
-    #디버깅
-    k = range(1, len(titles))
-    scrap = zip(k, titles, artists)
-    [print(f"{k} 위 {i.find('a').text} : {j.find('a').text}") for k, i, j in scrap]
-    #dict 로 변환
-    for i in range(0, len(titles)):
-        arg.dic[arg.titles[i]] = arg.artists[i]
-
-    # csv 파일로 저장
-
+    artists = [i.find('a').text for i in artists]
+    [print(f"{i}위 {j} : {k}") # 디버깅
+     for i, j, k in zip(range(1, len(titles)), titles, artists)]
+    diction = {} # dict 로 변환
+    for i, j in enumerate(titles):
+        diction[j] = artists[i]
+    arg.diction = diction
     arg.dict_to_dataframe()
-    arg.dataframe_to_csv()
+    arg.dataframe_to_csv() # csv파일로 저장
