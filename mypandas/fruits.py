@@ -9,7 +9,12 @@
 3번과일: 망고
 ********************************
 """
-from util.common import Common
+from string import ascii_lowercase
+
+import numpy as np
+import pandas as pd
+
+'''from util.common import Common
 
 
 class Fruit(object):
@@ -65,5 +70,31 @@ class Fruit(object):
             else:
                 print("없는 메뉴입니다. 다시 선택해주세요")
 
-Fruit.main()
+Fruit.main()'''
 
+MENUS=["종료", "과일 2D", "숫자 2D"]
+
+def MenuController():
+    [print(f"{i}.{j}")for i,j in enumerate(MENUS)]
+    return input("메뉴 입력: ")
+def new_number():
+    df = pd.DataFrame(np.array([list(range(1,11)),
+                                list(range(11,21)),
+                                list(range(21,31))]),
+                      columns=[list(ascii_lowercase)[0:10]])
+    print(df.head())
+
+
+if __name__ == '__main__':
+    while True:
+        menu = MenuController()
+        if menu == "0":
+            print("종료")
+            break
+        elif menu =="1":
+            print("과일 2D")
+        elif menu =="2":
+            print("숫자 2D")
+            new_number()
+        else:
+            print("다시 입력하시오")

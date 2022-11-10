@@ -39,14 +39,13 @@ class Mpg():
         print(mpg['test'])
 
     def ct(self):
-        ct = self.tes_t().value_counts()
-        return ct
+        tes_t= self.tes_t
+        tes_t.value_counts()
 
     def draw_graph(self):
-        graph = self.ct().plot.bar(rot=0)
+        self.ct().plot.bar(rot=0)
         plt.show()
         plt.savefig('./save/mpg_graph.png')
-        return graph
 
     def avg_compare(self):
         mpg = self.mpg
