@@ -1,21 +1,26 @@
 import numpy as np
 import pandas as pd
 from util.dataset import Dataset
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
 
+'''  
+['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp',
+#           'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked']
+#시각화를 통해 얻은 상관관계 변수(variable = feature = column) 는 
+pclass
+sex
+age
+fare
+embarked
 
-'''  ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp',
-        #           'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked']
-        #시각화를 통해 얻은 상관관계 변수(variable = feature = column) 는 
-        pclass
-        sex
-        age
-        fare
-        embarked
-        
-        # ==null 값==
-        # Age            177
-        # Cabin          687
-        # Embarked         2 
+# ==null 값==
+# Age            177
+# Cabin          687
+# Embarked         2 
         '''
 
 
@@ -111,6 +116,33 @@ class TitanicModel(object):
                 'Rare':6
             })
         return this
+
+
+    @staticmethod
+    def create_k_fold() ->object:
+        return KFold(n_splits=10, shuffle=True, random_state=0)
+
+    @staticmethod
+    def get_accuracy(this, algo):
+        algo = cross_val_score(LogisticRegression(),
+                                this.train,
+                                this.label,
+                                cv=TitanicModel.create_k_fold(),
+                                n_jobs=1,
+                                scoring='accuracy')
+        '''algo = cross_val_score(DecisionTreeClassifier(),
+                                this.train,
+                                this.label,
+                                cv=TitanicModel.create_k_fold(),
+                                n_jobs=1,
+                                scoring='accuracy')'''
+        score = cross_val_score(RandomForestClassifier(),
+                                this.train,
+                                this.label,
+                                cv=TitanicModel.create_k_fold(),
+                                n_jobs=1,
+                                scoring='accuracy')
+        return round(np.mean(algo)*100,2)
 
 
 
