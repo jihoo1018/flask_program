@@ -50,14 +50,14 @@ def my_menu(ls):
     return input('메뉴선택: ')
 
 ls = ["종료", "데이터구하기", "한글화" ,
-        "타깃변수 설정", "데이터처리", "시각화",
+        "타깃변수 설정", "데이터처리", "샘플링",
         "모델링", "학습","예측"]
 switch = {
     "1": lambda t: t.spec(),
     "2": lambda t: t.rename_meta(),
     "3": lambda t: t.menu_3(),
     "4": lambda t: t.menu_4(),
-    "5": lambda t: t.menu_5(),
+    "5": lambda t: t.sampling(),
     "6": lambda t: t.menu_6(),
     "7": lambda t: t.menu_7(),
     "8": lambda t: t.menu_8()

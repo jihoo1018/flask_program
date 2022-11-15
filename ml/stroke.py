@@ -23,6 +23,8 @@ None
 '''
 import pandas as pd
 from sklearn.preprocessing import OrdinalEncoder
+from imblearn.under_sampling import RandomUnderSampler
+from sklearn.model_selection import train_test_split
 
 stroke_meta = {
     "id": "아이디",
@@ -129,6 +131,22 @@ class StrokeService():
         t.to_csv('./save/stroke.csv')
 
 
+    def sampling(self):
+        df = pd.read_csv("./save/stroke.csv")
+        data = df.drop(['뇌졸증'],axis=1)
+        target = df['뇌졸증']
+        undersample = RandomUnderSampler(sampling_strategy=0.333, random_state=2)
+        data_under, target_under = undersample.fit_resample(data,target)
+        print(target_under.value_counts(dropna=True))
+        X_train, X_test, y_train, y_test = train_test_split(data_under, target_under,
+                                                            test_size=0.5, random_state=42,stratify=target_under)
+
+        print("X_train shape:", X_train.shape)
+        print("X_test shape", X_test.shape)
+        print("y_train shape", y_train.shape)
+        print("y_test shape", y_test.shape)
+        print(y_train.value_counts(normalize=True))
+        print(y_train.value_counts())
 
 
 

@@ -100,7 +100,7 @@ class TitanicModel(object):
     def title_norminal(this) -> object:
         combine = [this.train, this.test]
         for i in combine:
-            i['Title'] = i.Name.str.extract('([A-Za-z]+)\.',expand=False)
+            i['Title'] = i['Name'].str.extract('([A-Za-z]+)\.',expand=False)
         for i in combine:
             i['Title'] = i['Title'].replace(['Countess', 'Lady', 'Sir'], 'Royal')
             i['Title'] = i['Title'].replace(['Capt', 'Col', 'Don', 'Dr', 'Major', 'Rev', 'Jonkheer', 'Dona', 'Mme'], 'Rare')
