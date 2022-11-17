@@ -1,5 +1,7 @@
 import googlemaps
+import numpy as np
 import pandas as pd
+import pickle
 
 CRIME_MENUS = [ "EXIT", #0
                 "SPEC",#1
@@ -13,7 +15,7 @@ CRIME_MENUS = [ "EXIT", #0
 crime_menu = {
     "1" : lambda t: t.spec(),
     "2" : lambda t: t.save_police_pos(),
-    "3" : lambda t: t.turn_xls(),
+    "3" : lambda t: t.save_cctv_pas(),
     "4" : lambda t: t.categorical_variables(),
     "5" : lambda t: t.sampling(),
     "6" : lambda t: print(" ** No Function ** "),
@@ -25,7 +27,8 @@ class CrimeService():
     def __init__(self):
         self.crime = pd.read_csv('./data/crime_in_seoul.csv')
         self.cctv = pd.read_csv('./data/cctv_in_seoul.csv')
-        self.pop = pd.read_excel('./data/pop_in_seoul.xls',skiprows=[0,2])
+        self.pop = pd.read_excel('./data/pop_in_seoul.xls',
+                                 skiprows=[0,2],usecols=['자치구','합계','한국인','등록외국인','65세이상고령자'])
         self.ls = [self.crime,self.cctv, self.pop]
 
 
@@ -77,17 +80,51 @@ class CrimeService():
             gu_names.append(gu_name)
         crime['구별'] = gu_names
         crime.to_csv("./save/police_pos.csv", index= False)
+        crime.to_pickle("./save/police_pos.pkl")
+        print(pd.read_pickle('./save/police_pos.pkl'))
 
-    def turn_xls(self):
+
+    def save_cctv_pas(self):
+        cctv = self.cctv
         pop = self.pop
-        pop = pop.iloc[:,[1,3,6,9,13]]
-        print(pop.head(3))
+        cctv.rename(columns={cctv.columns[0]:'구별'},inplace=True)
+        pop.rename(columns={
+            pop.columns[0]:'구별',
+            pop.columns[1]:'인구수',
+            pop.columns[2]: '한국인',
+            pop.columns[3]: '외국인',
+            pop.columns[4]: '고령자',
+        },inplace=True)
+        pop.drop(index=26,inplace=True)
+        print("*"*100)
+        pop['외국인비율'] = pop['외국인'].astype(int)/pop['인구수'].astype(int)*100
+        pop['고령자비율'] = pop['고령자'].astype(int) / pop['인구수'].astype(int) * 100
+        cctv.drop(['2013년도 이전','2014년','2015년','2016년'],axis=1,inplace=True)
+        cctv_pop = pd.merge(cctv, pop, on="구별")
+        cor1 = np.corrcoef(cctv_pop['고령자비율'], cctv_pop['소계'])
+        cor2 = np.corrcoef(cctv_pop['외국인비율'], cctv_pop['소계'])
+        print(f'고령자비율과 CCTV의 상관계수 {str(cor1)} \n'
+              f'외국인비율과 CCTV의 상관계수 {str(cor2)} ')
+        """
+         고령자비율과 CCTV 의 상관계수 [[ 1.         -0.28078554]
+                                     [-0.28078554  1.        ]] 
+         외국인비율과 CCTV 의 상관계수 [[ 1.         -0.13607433]
+                                     [-0.13607433  1.        ]]
+        r이 -1.0과 -0.7 사이이면, 강한 음적 선형관계,
+        r이 -0.7과 -0.3 사이이면, 뚜렷한 음적 선형관계,
+        r이 -0.3과 -0.1 사이이면, 약한 음적 선형관계,
+        r이 -0.1과 +0.1 사이이면, 거의 무시될 수 있는 선형관계,
+        r이 +0.1과 +0.3 사이이면, 약한 양적 선형관계,
+        r이 +0.3과 +0.7 사이이면, 뚜렷한 양적 선형관계,
+        r이 +0.7과 +1.0 사이이면, 강한 양적 선형관계
+        고령자비율 과 CCTV 상관계수 [[ 1.         -0.28078554] 약한 음적 선형관계
+                                    [-0.28078554  1.        ]]
+        외국인비율 과 CCTV 상관계수 [[ 1.         -0.13607433] 거의 무시될 수 있는
+                                    [-0.13607433  1.        ]]                        
+        """
+        cctv_pop.to_pickle("./save/cctv_pop.pkl")
+        print(pd.read_pickle('./save/cctv_pop.pkl'))
 
-
-
-
-    def rename_meta(self):
-        pass
 
     def interval_variables(self):
         pass
